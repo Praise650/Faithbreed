@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "723246757218",
+    "firebase_url": "https://faith-breed-default-rtdb.firebaseio.com",
+    "project_id": "faith-breed",
+    "storage_bucket": "faith-breed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723246757218:android:01ba97960b70e72510683b",
+        "android_client_info": {
+          "package_name": "ng.com.techdot.faith_breed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723246757218-hevk1svqqbm2flac17o81etanq56ngbf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.com.techdot.faith_breed",
+            "certificate_hash": "3f586bb081a3ae960735af78c08b4cdfbb09648d"
+          }
+        },
+        {
+          "client_id": "723246757218-p037d2bf61va9ojvehv1gtqcmmmct754.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO8sgqR0DDbDODLjJzjOtWZup4tziyOhk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723246757218-p037d2bf61va9ojvehv1gtqcmmmct754.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
