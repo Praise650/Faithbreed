@@ -1,9 +1,8 @@
 import 'package:faith_breed/DB/db.dart';
-import 'package:faith_breed/newSoulsWonDialog_sheel.dart';
-import 'package:faith_breed/shared_widget/reusable_list_tile.dart';
-import 'package:faith_breed/shared_widget/signup_button.dart';
 import 'package:faith_breed/shared_widget/text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class AddANewSoul extends StatefulWidget {
   const AddANewSoul({Key? key}) : super(key: key);
@@ -14,146 +13,228 @@ class AddANewSoul extends StatefulWidget {
 
 class _AddANewSoulState extends State<AddANewSoul> {
   DataBase _dataBase = DataBase();
-  List<String> names = ['Afuwape', 'Praise', 'Ayo', 'Tope Aderibigbe', 'Shola'];
-  List<String> email = [
-    'a@gmail.com',
-    'praise@yahoo.com',
-    'ayo@hotmail.com',
-    'tope.aderibigbe@gmail.com',
-    'a.shola@yahoo.com'
-  ];
-  List<String> location = [
-    'Futa Southgate',
-    'Plot A, Okemeji Akure',
-    'Stamford Bridge FUTA Southgate',
-    'F&S hostel Southgate',
-    'Green Garage'
-  ];
-  List<String> phone = [
-    '08111243576',
-    '09015243353',
-    '07053532535',
-    '0912853533',
-    '081853533233'
-  ];
-  TextEditingController? fullName,emailaddress,address,phoneNumber,occupation;
+  TextEditingController fullName = TextEditingController();
+  TextEditingController emailaddress = TextEditingController();
+  TextEditingController address = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController occupation = TextEditingController();
+  final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
+  bool showSpinner = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 5.0,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'New Soul',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.red[600],
-            fontSize: 30.0,
-          ),
-        ),
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(10),
-        child: ListView(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InputField(
-                  obscureText: false,
-                  // hintText: 'Ayomide',
-                  label: 'Full Name',
-                  suffixIcon: '',
-                  inputType: TextInputType.emailAddress,
-                  controller: fullName,
-                  validator: (value) {
-                    if (value!.isEmpty || value == null) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                InputField(
-                  obscureText: false,
-                  // hintText: 'kamushken@gmail.com',
-                  label: 'E-mail',
-                  inputType: TextInputType.emailAddress,
-                  controller: emailaddress,
-                  suffixIcon: '',
-                  validator: (value) {
-                    if (value!.isEmpty ||
-                        value == null ||
-                        !value.contains('@') ||
-                        !value.contains('.')) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                InputField(
-                  obscureText: false,
-                  // hintText: 'Occupation',
-                  label: 'Address',
-                  suffixIcon: '',
-                  inputType: TextInputType.emailAddress,
-                  controller: address,
-                  validator: (value) {
-                    if (value!.isEmpty || value == null) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                InputField(
-                  obscureText: false,
-                  suffixIcon: '',
-                  // hintText: 'DOB',
-                  label: 'Phone Number',
-                  inputType: TextInputType.emailAddress,
-                  controller: phoneNumber,
-                  validator: (value) {
-                    if (value!.isEmpty || value == null) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                InputField(
-                  obscureText: false,
-                  // hintText: 'Occupation',
-                  suffixIcon: '',
-                  label: 'Occupation',
-                  inputType: TextInputType.emailAddress,
-                  controller: occupation,
-                  validator: (value) {
-                    if (value!.isEmpty || value == null) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                LoginButton(
-                  onTap: () {
-                    _dataBase.storeSoulDetails(
-                      fullName.toString(), 
-                      emailaddress.toString(), 
-                      address.toString(), 
-                      phoneNumber.toString(), 
-                      occupation.toString(),
-                      context,
-                      );
-                  },
-                  mainText: 'Add Brethren',
-                ),
-              ],
+      body: ModalProgressHUD(
+        inAsyncCall: showSpinner,
+        child: SafeArea(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.only(top: 35),
+            padding: EdgeInsets.only(
+              left: 25.0,
+              right: 25.0,
             ),
-          ],
+            child: Form(
+              key: _globalKey,
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      'New Soul',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red[600],
+                        fontSize: 30.0,
+                      ),
+                    ),
+                  ),
+                  ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40.0),
+                            child: InputField(
+                              obscureText: false,
+                              // hintText: 'Ayomide',
+                              label: 'Full Name',
+                              suffixIcon: '',
+                              inputType: TextInputType.name,
+                              controller: fullName,
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: InputField(
+                              obscureText: false,
+                              // hintText: 'kamushken@gmail.com',
+                              label: 'E-mail',
+                              inputType: TextInputType.emailAddress,
+                              controller: emailaddress,
+                              suffixIcon: '',
+                              validator: (value) {
+                                if (value!.isEmpty ||
+                                    value == null ||
+                                    !value.contains('@') ||
+                                    !value.contains('.')) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: InputField(
+                              obscureText: false,
+                              // hintText: 'Occupation',
+                              label: 'Address',
+                              suffixIcon: '',
+                              inputType: TextInputType.streetAddress,
+                              controller: address,
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: InputField(
+                              obscureText: false,
+                              suffixIcon: '',
+                              // hintText: 'DOB',
+                              label: 'Phone Number',
+                              inputType: TextInputType.phone,
+                              controller: phoneNumber,
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: InputField(
+                              obscureText: false,
+                              // hintText: 'Occupation',
+                              suffixIcon: '',
+                              label: 'Occupation',
+                              inputType: TextInputType.name,
+                              controller: occupation,
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return '';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: GestureDetector(
+                              child: Container(
+                                height: MediaQuery.of(context).size.height * 0.06,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colors.red,
+                                    style: BorderStyle.solid,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Add Brethren'.toUpperCase(),
+                                    style: GoogleFonts.openSans(
+                                      color: Color(0xFFD12424),
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onTap: () {
+                                if (fullName.text.isEmpty ||
+                                    emailaddress.text.isEmpty ||
+                                    occupation.text.isEmpty ||
+                                    occupation.text.isEmpty ||
+                                    address.text.isEmpty) {
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    showSpinner = true;
+                                  });
+                                }
+                                if (
+                                    // validates form details submitted by users
+                                    _globalKey.currentState!.validate()) {
+                                  // saves form details submitted by users
+                                  _globalKey.currentState!.save();
+                                } else {
+                                  // if field are empty return null (do not proceed)
+                                  setState(() {
+                                    showSpinner = false;
+                                  });
+                                  return null;
+                                }
+                                Future.delayed(Duration(seconds: 5));
+                                _dataBase
+                                    .storeSoulDetails(
+                                      fullName.text,
+                                      emailaddress.text,
+                                      address.text,
+                                      phoneNumber.text,
+                                      occupation.text,
+                                    )
+                                    .then(
+                                      (value) => ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          padding: EdgeInsets.only(
+                                              bottom: 30.0, left: 20.0),
+                                          content:
+                                              Text("Details added succesfully"),
+                                        ),
+                                      ),
+                                    );
+                                fullName.clear();
+                                emailaddress.clear();
+                                address.clear();
+                                phoneNumber.clear();
+                                occupation.clear();
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -174,62 +255,38 @@ class _AddANewSoulState extends State<AddANewSoul> {
       //   ),
       // ),
 
-
-      //     EmailTextFormField(
-                //   hintText: '*************',
-                //   obscureText: _isHidden,
-                //   labelText: 'Password',
-                //   inputType: TextInputType.visiblePassword,
-                //   suffixIcon: _isHidden == true ?  'Hide':'Show',
-                //   iconOnPressed: togglePasswordVisibility,
-                //   controller: passController,
-                //   validator: (value) {
-                //     pass = value;
-                //     if (value!.isEmpty || value == null) {
-                //       return '*Password is Required';
-                //     } else if ((value.length <= 2)) {
-                //       return '*Password should be atleast 3 characters';
-                //     } else if ((value.length >= 10)) {
-                //       return '*Password should not be more than 9 characters long';
-                //     }
-                //     return null;
-                //   },
-                // ),
-
-                //   InputField(lines: 1,
-                //     // suffixIcon: Icons.person,
-                //     // hintText: 'Fagbamila',
-                //     // obscureText: false,
-                //     label: 'Last name',
-                //     inputType: TextInputType.emailAddress,
-                //     controller: emailController,
-                //      validator: (value) {
-                //   if (value!.isEmpty || value == null) {
-                //     return '*Enter your last name';
-                //   }
-                //   return null;
-                // },
-                //   ),
-
-                // EmailTextFormField(
-                //   hintText: '*************',
-                //   obscureText: _isHidden,
-                //   labelText: 'Confirm Password',
-                //   inputType: TextInputType.visiblePassword,
-                //   suffixIcon: _isHidden == true ?  Icons.visibility_off
-                //               : Icons.remove_red_eye,
-                //   iconOnPressed: togglePasswordVisibility,
-                //   controller: passController,
-                //   validator: (value) {
-                //     if (value!.isEmpty || value == null) {
-                //       return '*Field cannot be empty';
-                //     }else if(value != pass){
-                //       return 'Should be the same with password';
-                //      }else if ((value.length <= 2)) {
-                //       return '*Password should be atleast 3 characters';
-                //     } else if ((value.length >= 10)) {
-                //       return '*Password should not be more than 9 characters long';
-                //     }
-                //     return null;
-                //   },
-                // ),
+      // LoginButton(
+                  //   onTap: () {
+                  //     if (
+                  //         // validates form details submitted by users
+                  //         _globalKey.currentState!.validate()) {
+                  //       // saves form details submitted by users
+                  //       _globalKey.currentState!.save();
+                  //     } else {
+                  //       // if field are empty return null (do not proceed)
+                  //       return null;
+                  //     }
+                  //     _dataBase
+                  //         .storeSoulDetails(
+                  //           fullName.text,
+                  //           emailaddress.text,
+                  //           address.text,
+                  //           phoneNumber.text,
+                  //           occupation.text,
+                  //         )
+                  //         .then((value) =>
+                  //             ScaffoldMessenger.of(context).showSnackBar(
+                  //               SnackBar(
+                  //                 padding:
+                  //                     EdgeInsets.only(bottom: 30.0, left: 20.0),
+                  //                 content: Text("Details added succesfully"),
+                  //               ),
+                  //             ));
+                  //     fullName.clear();
+                  //     emailaddress.clear();
+                  //     address.clear();
+                  //     phoneNumber.clear();
+                  //     occupation.clear();
+                  //   },
+                  //   mainText: 'Add Brethren',
+                  // ),

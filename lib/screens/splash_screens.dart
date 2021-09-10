@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
           //   child: ,
           // ),
           Container(
-            color: Color(0xFFf1a1a1),
+            color: Colors.white,
             // scale: 1.0,
             width: MediaQuery.of(context).size.width,
             // fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen>
           Center(
             child: Opacity(
               opacity: animationController!.value,
-              child: Image.asset("images/logotrans.png"),
+              child: Image.asset("images/pneuma_logo_3.png",height:300),
             ),
           )
         ],

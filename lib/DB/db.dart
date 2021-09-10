@@ -1,46 +1,113 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
-import 'authentications.dart';
-class DataBase{
-FirebaseFirestore firestore = FirebaseFirestore.instance;
+class DataBase {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  User? firebase = FirebaseAuth.instance.currentUser;
 // stores signin details of users
-Future<void> storeDetails(String fullname,String email,String password,String occupation, String dateOfbirth) async {
-  final CollectionReference users =  firestore.collection("SignedInUsersDetails");
-    return users.add({
-      'FullName':  fullname,
-      'E-mail': email,
-      'PassWord':password,
-      'Occupation': occupation,
-      'DOB':dateOfbirth,
-    }).then((value) => print('Details Added'))
-    .catchError((onError)=>print('$onError'));
+  Future<void> storeUsersDetails(String fullname, String email, 
+  // String password,
+      String occupation, String dateOfbirth) async {
+    final CollectionReference<Map<String, dynamic>> users =
+        firestore.collection("SignedInUsersDetails");
+
+    DateTime dateCreated = DateTime.now();
+
+    return users
+        .add({
+          'FullName': fullname,
+          'E-mail': email,
+          // 'PassWord':password, // You shouldn't add a user's password to your db
+          'Occupation': occupation,
+          'DOB': dateOfbirth,
+          'timestamp': dateCreated
+              .toString(), // You need this to track things on your db
+          'createdAt': dateCreated.millisecondsSinceEpoch,
+        })
+        .then((value) => print('Details Added'))
+        .catchError((onError) => print('$onError'));
   }
+
 // method handling new saved souls
-  Future<void> storeSoulDetails(String fullname,String email,String address,String phoneNumber, String occupation,BuildContext context) async {
-    // var ghgh = context.read<AuthenticationService>().getUser();
-    AuthenticationService authenticationService =AuthenticationService(FirebaseAuth.instance);
-    final CollectionReference users =  FirebaseFirestore.instance.doc(authenticationService.getUser().toString()).collection("SavedSoulDetails");
-    return users.add({
-      'FullName':  fullname,
-      'E-mail': email,
-      'PassWord':address,
-      'PhoneNumber': phoneNumber,
-      'Occupation':occupation,
-    }).then((value) => print('Details Added'))
-    .catchError((onError)=>print('$onError'));
+  Future<void> storeSoulDetails(String fullname, String email, String address,
+      String phoneNumber, String occupation,) async {
+        DateTime dateCreated = DateTime.now();
+    final DocumentReference<Map<String, dynamic>> users = firestore
+        .collection("SavedSoulDetails").doc(firebase!.email).collection('EachSavedSoulDetails').doc(email);
+    return users
+        .set({
+          'FullName': fullname,
+          'E-mail': email,
+          'Address': address,
+          'PhoneNumber': phoneNumber,
+          'Occupation': occupation,
+          'timestamp': dateCreated
+              .toString(), // You need this to track things on your db
+          'createdAt': dateCreated.millisecondsSinceEpoch,
+        })
+        .then((value) => print('Details Added'))
+        .catchError((onError) => print('$onError'));
   }
 
-  // get real time data from firebase
-  // Stream<QuerySnapshot> getUserData(){
-  //   final CollectionReference users =  firestore.collection("SavedSoulDetails");
-  //   firestore.collection('SignInUsersDetails').get().catchError(e){
-  //     print(e);
+  Future<void> updateStoreUserDetails(
+    String fullname, 
+      String occupation, String dateOfbirth){
+        final DocumentReference<Map<String, dynamic>> users = firestore.collection("SignedInUsersDetails").doc(firebase!.uid);
+        DateTime dateCreated = DateTime.now();
 
-  //   };
-  //   return users.snapshots();
-  // }
+    return users
+        .update({
+          'FullName': fullname,
+          'Occupation': occupation,
+          'DOB': dateOfbirth,
+          'timestamp': dateCreated
+              .toString(), // You need this to track things on your db
+          'createdAt': dateCreated.millisecondsSinceEpoch,
+        })
+        .then((value) => print('Details Added'))
+        .catchError((onError) => print('$onError'));
+
+  }
 }
+
+
+// Future<void> storeDetails(String fullname, String email, String password,
+//       String occupation, String dateOfbirth) async {
+//     final CollectionReference users =
+//         firestore.doc(firebase!.email.toString()).collection("SignedInUsersDetails");
+
+//     DateTime dateCreated = DateTime.now();
+
+//     return users
+//         .add({
+//           'FullName': fullname,
+//           'E-mail': email,
+//           // 'PassWord':password, // You shouldn't add a user's password to your db
+//           'Occupation': occupation,
+//           'DOB': dateOfbirth,
+//           'timestamp': dateCreated
+//               .toString(), // You need this to track things on your db
+//           'createdAt': dateCreated.millisecondsSinceEpoch,
+//         })
+//         .then((value) => print('Details Added'))
+//         .catchError((onError) => print('$onError'));
+//   }
+
+
+
+
+// Future<void> storeSoulDetails(String fullname, String email, String address,
+//       String phoneNumber, String occupation,) async {
+//     final DocumentReference<Map<String, dynamic>> users = firestore
+//         .collection("SavedSoulDetails").doc(firebase!.email.toString());
+//     return users
+//         .set({
+//           'FullName': fullname,
+//           'E-mail': email,
+//           'Address': address,
+//           'PhoneNumber': phoneNumber,
+//           'Occupation': occupation,
+//         })
+//         .then((value) => print('Details Added'))
+//         .catchError((onError) => print('$onError'));
+//   }

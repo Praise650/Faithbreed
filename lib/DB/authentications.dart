@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 
-class AuthenticationService{
+enum AuthenticationState { UserCreated, SignedIn, SignedOut, WrongPassword }
 
+class AuthenticationService {
   // 1
   final FirebaseAuth _firebaseAuth;
 
@@ -11,24 +11,29 @@ class AuthenticationService{
   // 2
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
-
   // 3
-  Future<String> signIn({required String email, required String password}) async {
+  Future<String> signIn(
+      {required String email, required String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed in";
-    } on FirebaseAuthException catch(e) {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return AuthenticationState.SignedIn.toString();
+    } on FirebaseAuthException catch (e) {
+      if (e.message.toString() ==
+          "The password is invalid or the user does not have a password.")
+        return AuthenticationState.WrongPassword.toString();
       return e.message.toString();
     }
   }
 
   // 4
-  Future<String> signUp({required String email, required String password}) async {
+  Future<String> signUp(
+      {required String email, required String password}) async {
     try {
-      // UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return 'User Created';
-    } on FirebaseAuthException catch(e) {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return AuthenticationState.UserCreated.toString();
+    } on FirebaseAuthException catch (e) {
       return e.message.toString();
     }
   }
@@ -37,19 +42,18 @@ class AuthenticationService{
   Future<String> signOut() async {
     try {
       await _firebaseAuth.signOut();
-      return "Signed out";
-    } on FirebaseAuthException catch(e) {
+      return AuthenticationState.SignedOut.toString();
+    } on FirebaseAuthException catch (e) {
       return e.message.toString();
     }
   }
 
 // 6
- User? getUser() {
+  User? getUser() {
     try {
       return _firebaseAuth.currentUser;
     } on FirebaseAuthException {
       return null;
     }
   }
-
 }

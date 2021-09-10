@@ -1,13 +1,12 @@
 import 'package:faith_breed/authentications/sign_in.dart';
-import 'package:faith_breed/sdabhfdvsavd.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'DB/authentications.dart';
 import 'authentications/register.dart';
 import 'screens/become_an_ambassador.dart';
+import 'screens/forget_password.dart';
 import 'screens/hompage.dart';
 import 'screens/onboarding.dart';
 import 'screens/splash_screens.dart';
@@ -33,7 +32,8 @@ class MyHomePage extends StatelessWidget {
                   body: Container(
                     child: Center(
                       child: Text(
-                          "Something Went Wrong!... Could not initialize connection."),
+                        "Something Went Wrong!... Could not initialize connection.",
+                      ),
                     ),
                   ),
                 ));
@@ -66,7 +66,7 @@ class MyHomePage extends StatelessWidget {
                   'register_page': (context) => Register(),
                   'sign_in': (context) => SignIn(),
                   'become_an_ambassador': (context) => BecomeAnAmbassador(),
-                  'hshs':(context)=>sbdsdfb(),
+                  'forgot_password':(context)=> ForgotPassword(),
                 },
               ),
             );
@@ -83,11 +83,11 @@ class MyHomePage extends StatelessWidget {
         });
   }
 }
-
+// checks if user already signed in or not
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firebaseuser = context.watch<User>();
+    final firebaseuser = context.watch<User?>();
     if (firebaseuser != null) {
       return HomePage();
     }

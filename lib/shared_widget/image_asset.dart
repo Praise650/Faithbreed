@@ -12,7 +12,7 @@ double width;
   Widget build(BuildContext context) {
     return Image(
       image: AssetImage(
-        'images/logotrans.png',
+        'images/pneuma_logo_3.png',
       ),
       height: height,
       width: width,

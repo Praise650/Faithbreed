@@ -1,10 +1,29 @@
-import 'package:flutter/cupertino.dart';
+class RegisteredSouls {
+  String? _id;
+  String? fullname;
+  String? email;
+  String? address;
+  String? phoneNumber;
+  String? occupation;
 
-class RegisteredSouls{
-TextEditingController? nameController;
-TextEditingController? emailController;
-TextEditingController? phoneController;
-TextEditingController? locationController;
+  RegisteredSouls({
+    this.fullname,
+    this.email,
+    this.address,
+    this.phoneNumber,
+    this.occupation,
+  }); 
 
-RegisteredSouls({this.emailController, this.nameController,this.locationController,this.phoneController});
+  set id(id) {
+     this.id = id;
+  }
+
+  RegisteredSouls.fromJson(Map<String, dynamic> json) {
+    id = json['timestamp'];
+    fullname = json['FullName'];
+    email = json['E-mail'];
+    address = json['Address'];
+    phoneNumber = json['PhoneNumber'];
+    occupation = json['Occupation'];
+  }
 }

@@ -18,7 +18,7 @@ class BecomeAnAmbassador extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(top: 40),
-              child: Image(image: AssetImage('images/logotrans.png'))),
+              child: Image(image: AssetImage('images/pneuma_logo_3.png',),height: 200,)),
             SizedBox(
               height: 61,
             ),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'shared_widget/signup_button.dart';
-
-show(BuildContext context,String fullName, String email,
-  String phone,
-  String location,) {
+show(BuildContext context, String fullName, String email, String phone,
+    String location, String occupation,) {
   return showModalBottomSheet(
     enableDrag: true,
     elevation: 5.0,
@@ -28,10 +27,39 @@ show(BuildContext context,String fullName, String email,
                 color: Colors.red[600],
                 fontWeight: FontWeight.bold),
           ),
-          ListTile(trailing:Icon(Icons.person), title:Text(fullName),onTap: null,),
-          ListTile(trailing:Icon(Icons.mail), title:Text(email),onTap: (){},),
-          ListTile(trailing:Icon(Icons.phone), title:Text(phone),onTap: (){},),
-          ListTile(trailing:Icon(Icons.local_activity), title:Text(location),onTap: null,),
+          ListTile(
+            trailing: Icon(Icons.person),
+            title: Text(fullName),
+            onTap: null,
+          ),
+          ListTile(
+              trailing: Icon(Icons.mail),
+              title: Text(email),
+              onTap: () async {
+                Email emails= Email(
+                  body: 'Email Body',
+                  subject: 'Email Subject',
+                  recipients: [email],
+                  isHTML: false,
+                );
+                 await FlutterEmailSender.send(emails);
+              }),
+          ListTile(
+            trailing: Icon(Icons.phone),
+            title: Text(phone),
+            onTap: () async {
+              await FlutterPhoneDirectCaller.callNumber(phone);
+              }),
+          ListTile(
+            trailing: Icon(Icons.location_on_rounded),
+            title: Text(location),
+            onTap: null,
+          ),
+          ListTile(
+            trailing: Icon(Icons.work),
+            title: Text(occupation),
+            onTap: null,
+          ),
           LoginButton(
             onTap: () {
               Navigator.pop(context);

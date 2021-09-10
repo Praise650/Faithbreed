@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:faith_breed/model.dart';
 import 'package:faith_breed/shared_widget/reusable_list_tile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../newSoulsWonDialog_sheel.dart';
@@ -11,14 +14,24 @@ class SoulsWon extends StatefulWidget {
 }
 
 class _SoulsWonState extends State<SoulsWon> {
-  // A list of images 
-  List<String> names = ['Afuwape', 'Praise', 'Ayo', 'Tope Aderibigbe', 'Shola'];
-  List<String> email = ['a@gmail.com', 'praise@yahoo.com', 'ayo@hotmail.com', 'tope.aderibigbe@gmail.com', 'a.shola@yahoo.com'];
-  List<String> location = ['Futa Southgate', 'Plot A, Okemeji Akure', 'Stamford Bridge FUTA Southgate', 'F&S hostel Southgate', 'Green Garage'];
-  List<String> phone = ['08111243576', '09015243353', '07053532535', '0912853533', '081853533233'];
+  User? user = FirebaseAuth.instance.currentUser;
+
+  @override
+  initState() {
+    super.initState();
+    setState(() {
+      // getAllDocument();
+    });
+  }
+
+  String? name;
+  String? email;
+  String? address;
+  String? phoneNumber;
+  String? occupation;
+  int index = 1;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 5.0,
@@ -41,45 +54,140 @@ class _SoulsWonState extends State<SoulsWon> {
             left: 10.0,
             right: 10.0,
           ),
-          child: ListView.builder(
-              itemCount: names.length,
-              itemBuilder: (context, index) {
-                return ReusableListTile(
-                  text: names[index],
-                  onPressed: () {
-                    show(context,
-                    names[index],
-                    email[index],
-                    phone[index],
-                    location[index],
+          child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("SavedSoulDetails")
+                  .doc(user!.email)
+                  .collection('EachSavedSoulDetails')
+                  .snapshots(),
+              builder: (BuildContext context, AsyncSnapshot snapshots) {
+                if (snapshots.hasError) {
+                  return Text('Something went wrong');
+                }
+                if (snapshots.connectionState == ConnectionState.waiting) {
+                  return Center(child: Text("Loading..."));
+                }
+                if (snapshots == null) {
+                  return Text('Nothing to show');
+                }
+                if (snapshots.hasData ||
+                    snapshots.connectionState == ConnectionState.done) {
+                  final users = snapshots.data!.docs;
+                  List<Widget> list = [];
+                  for (var user in users) {
+                    print(user.data());
+                    RegisteredSouls soul = RegisteredSouls.fromJson(user.data());
+                    // soul.id = user.id;
+                    name = soul.fullname;
+                    email = user.data()['E-mail'];
+                    address = user.data()['Address'];
+                    phoneNumber = user.data()['PhoneNumber'];
+                    occupation = user.data()['Occupation'];
+                    final displayWidget = ReusableListTile(
+                        text: name!,
+                        onPressed: () {
+                          show(
+                              context,
+                              name.toString(),
+                              email.toString(),
+                              phoneNumber.toString(),
+                              address.toString(),
+                              occupation.toString());
+                        });
+                    list.add(displayWidget);
+                  }
+                  return ListView.builder(
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                    return Column(
+                      children: list,
+                    );
+                  });
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                  },
-                );
+                }
               }),
         ),
-      ), 
+      ),
     );
   }
 }
 
-
-
-
-
 // ListView(
 //           children: [],
 //           // List.generate(
-          //   imageList.length,
-          //   (index) => Padding(
-          //     padding: const EdgeInsets.only(left:25.0,right: 25.0,top: 8.0,),
-          //     child: Card(
-          //       child: Container(
-          //         child: Image(
-          //           image: imageList[index],
-          //           fit: BoxFit.fill,
-          //            width: size.width,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
+//   imageList.length,
+//   (index) => Padding(
+//     padding: const EdgeInsets.only(left:25.0,right: 25.0,top: 8.0,),
+//     child: Card(
+//       child: Container(
+//         child: Image(
+//           image: imageList[index],
+//           fit: BoxFit.fill,
+//            width: size.width,
+//         ),
+//       ),
+//     ),
+//   ),
+// ),
+
+
+
+  // // A list of images
+  // List<String> names = ['Afuwape', 'Praise', 'Ayo', 'Tope Aderibigbe', 'Shola'];
+  // List<String> email = [
+  //   'a@gmail.com',
+  //   'praise@yahoo.com',
+  //   'ayo@hotmail.com',
+  //   'tope.aderibigbe@gmail.com',
+  //   'a.shola@yahoo.com'
+  // ];
+  // List<String> location = [
+  //   'Futa Southgate',
+  //   'Plot A, Okemeji Akure',
+  //   'Stamford Bridge FUTA Southgate',
+  //   'F&S hostel Southgate',
+  //   'Green Garage'
+  // ];
+  // List<String> phone = [
+  //   '08111243576',
+  //   '09015243353',
+  //   '07053532535',
+  //   '0912853533',
+  //   '081853533233'
+  // ];
+
+
+   // FirebaseFirestore.instance
+    //     .collection("SavedSoulDetails")
+    //     .get()
+    //     .then((querySnapshot) {
+    //   querySnapshot.docs.forEach((result) {
+    //     FirebaseFirestore.instance
+    //         .collection("SavedSoulDetails")
+    //         .doc(result.id)
+    //         .collection("EachSavedSoulDetails")
+    //         .get()
+    //         .then((querySnapshot) {
+    //       querySnapshot.docs.forEach((result) {
+    //         print(result.data());
+    //       });
+    //     });
+    //   });
+    // });
+
+
+  //    getAllDocument() async {
+  //   final users = await FirebaseFirestore.instance
+  //       .collection("SavedSoulDetails")
+  //       .doc(user!.email)
+  //       .collection('EachSavedSoulDetails')
+  //       .get();
+  //   for (var user in users.docs) {
+  //     print(user.data());
+  //     print(user.data()['FullName']);
+  //     print('is it :${user.data()['FullName']} you or the lifestyle');
+  //   }
+  // }

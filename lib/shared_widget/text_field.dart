@@ -51,7 +51,6 @@ class InputField extends StatelessWidget {
           String control = controller.toString();
           control=value.toString();
           print('$control'+ ' value of reuseable textfield');
-          print(controller.toString()+' value of bla bla bla');
         },
       ),
     );
