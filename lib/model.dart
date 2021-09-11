@@ -19,7 +19,7 @@ class RegisteredSouls {
   }
 
   RegisteredSouls.fromJson(Map<String, dynamic> json) {
-    id = json['timestamp'];
+    // id = json['timestamp'];
     fullname = json['FullName'];
     email = json['E-mail'];
     address = json['Address'];

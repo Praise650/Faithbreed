@@ -149,7 +149,7 @@ class _AddANewSoulState extends State<AddANewSoul> {
                             padding: const EdgeInsets.only(top: 20.0),
                             child: GestureDetector(
                               child: Container(
-                                height: MediaQuery.of(context).size.height * 0.06,
+                                height: MediaQuery.of(context).size.height * 0.07,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.rectangle,
