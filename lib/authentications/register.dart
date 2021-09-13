@@ -156,7 +156,9 @@ class _RegisterState extends State<Register> {
                                 LengthLimitingTextInputFormatter(5),
                                 // ignore: deprecated_member_use
                                 WhitelistingTextInputFormatter.digitsOnly,
-                                MaskedInputFormatter("00/00",),
+                                MaskedInputFormatter(
+                                  "00/00",
+                                ),
                               ],
                               inputType: TextInputType.datetime,
                               controller: dateOfBirth,
@@ -179,8 +181,8 @@ class _RegisterState extends State<Register> {
                         mainText: 'Register',
                         onTap: () async {
                           setState(() {
-                              showspinner = true;
-                            });
+                            showspinner = true;
+                          });
                           // validates form details submitted by users
                           if (_globalKey.currentState!.validate()) {
                             // saves form details submitted by users
@@ -194,7 +196,7 @@ class _RegisterState extends State<Register> {
                             setState(() {
                               showspinner = false;
                             });
-                          }else{
+                          } else {
                             setState(() {
                               showspinner = true;
                             });

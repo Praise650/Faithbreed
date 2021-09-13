@@ -53,7 +53,7 @@ show(BuildContext context, Souls soul) {
               }),
           ListTile(
             trailing: Icon(Icons.location_on_rounded),
-            title: Text(soul.location),
+            title: Text(soul.address),
             onTap: null,
           ),
           ListTile(
