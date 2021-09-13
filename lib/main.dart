@@ -27,6 +27,7 @@ class MyHomePage extends StatelessWidget {
           // Check for errors
           if (snapshot.hasError) {
             return MaterialApp(
+              title: 'Faith Breed',
                 debugShowCheckedModeBanner: false,
                 home: Scaffold(
                   body: Container(
@@ -36,7 +37,7 @@ class MyHomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ));
+                ),);
           }
           if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(

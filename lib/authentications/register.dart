@@ -7,6 +7,8 @@ import 'package:faith_breed/shared_widget/text_field.dart';
 import 'package:faith_breed/styles/styles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -146,10 +148,16 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                             InputField(
-                              // hintText: 'DOB',
                               obscureText: false,
                               suffixIcon: '',
                               label: 'DOB',
+                              hintText: 'DD/MM',
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(5),
+                                // ignore: deprecated_member_use
+                                WhitelistingTextInputFormatter.digitsOnly,
+                                MaskedInputFormatter("00/00",),
+                              ],
                               inputType: TextInputType.datetime,
                               controller: dateOfBirth,
                               validator: (value) {

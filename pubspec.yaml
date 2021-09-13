@@ -39,6 +39,7 @@ dependencies:
   provider: ^6.0.0
   flutter_phone_direct_caller: ^2.0.0
   flutter_email_sender: ^5.0.2
+  flutter_multi_formatter: ^2.3.5
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
 
 dev_dependencies:
