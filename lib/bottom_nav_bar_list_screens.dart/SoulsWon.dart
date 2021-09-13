@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:faith_breed/model.dart';
 import 'package:faith_breed/models/souls.dart';
 import 'package:faith_breed/shared_widget/reusable_list_tile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,12 +24,6 @@ class _SoulsWonState extends State<SoulsWon> {
     });
   }
 
-  String? name;
-  String? email;
-  String? address;
-  String? phoneNumber;
-  String? occupation;
-  int index = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,11 +72,6 @@ class _SoulsWonState extends State<SoulsWon> {
                     print(user.data());
                     Souls soul = Souls.fromJson(user.data());
                     soul.id = user.id;
-                    // name = soul.fullname;
-                    email = user.data()['E-mail'];
-                    address = user.data()['Address'];
-                    phoneNumber = user.data()['PhoneNumber'];
-                    occupation = user.data()['Occupation'];
                     final displayWidget = ReusableListTile(
                         text: soul.fullname,
                         onPressed: () {

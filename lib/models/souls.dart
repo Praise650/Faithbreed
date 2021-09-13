@@ -6,7 +6,7 @@ class Souls {
   late String address;
   late String occupation;
   late String timesStamp;
-  late DateTime createdAt;
+  late DateTime? createdAt;
 
   Souls(
     this.fullname,
@@ -20,14 +20,16 @@ class Souls {
   }
 
   Souls.fromJson(Map<String, dynamic> data) {
-    this.fullname = data["FullName"]!;
-    this.email = data["E-mail"]!;
-    this.phoneNumber = data["PhoneNumber"]!;
-    this.address = data["Address"]!;
-    this.occupation = data["Occupation"]!;
-    this.timesStamp = data["timestamp"]!;
-    this.createdAt = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(data["createdAt"]!.toString()));
+    this.fullname = data["FullName"] ?? "";
+    this.email = data["E-mail"] ?? "";
+    this.phoneNumber = data["PhoneNumber"] ?? "";
+    this.address = data["Address"] ?? "";
+    this.occupation = data["Occupation"] ?? "";
+    this.timesStamp = data["timestamp"] ?? "";
+    this.createdAt = data["createdAt"] != null
+        ? DateTime.fromMillisecondsSinceEpoch(
+            int.parse(data["createdAt"].toString()))
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -38,7 +40,7 @@ class Souls {
       'PhoneNumber': this.phoneNumber,
       'Occupation': this.occupation,
       'timestamp': this.timesStamp,
-      'createdAt': this.createdAt.millisecondsSinceEpoch,
+      'createdAt': this.createdAt!.millisecondsSinceEpoch,
     };
   }
 }
