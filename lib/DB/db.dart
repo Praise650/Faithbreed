@@ -5,9 +5,8 @@ class DataBase {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   User? firebase = FirebaseAuth.instance.currentUser;
 // stores signin details of users
-  Future<void> storeUsersDetails(String fullname, String email, 
-  // String password,
-      String occupation, String dateOfbirth) async {
+  Future<void> storeUsersDetails(String fullname, String email,
+      String occupation, String dateOfBirth) async {
     final CollectionReference<Map<String, dynamic>> users =
         firestore.collection("SignedInUsersDetails");
 
@@ -17,11 +16,9 @@ class DataBase {
         .add({
           'FullName': fullname,
           'E-mail': email,
-          // 'PassWord':password, // You shouldn't add a user's password to your db
           'Occupation': occupation,
-          'DOB': dateOfbirth,
-          'timestamp': dateCreated
-              .toString(), // You need this to track things on your db
+          'DOB': dateOfBirth,
+          'timestamp': dateCreated.toString(),
           'createdAt': dateCreated.millisecondsSinceEpoch,
         })
         .then((value) => print('Details Added'))
@@ -29,11 +26,19 @@ class DataBase {
   }
 
 // method handling new saved souls
-  Future<void> storeSoulDetails(String fullname, String email, String address,
-      String phoneNumber, String occupation,) async {
-        DateTime dateCreated = DateTime.now();
+  Future<void> storeSoulDetails(
+    String fullname,
+    String email,
+    String address,
+    String phoneNumber,
+    String occupation,
+  ) async {
+    DateTime dateCreated = DateTime.now();
     final DocumentReference<Map<String, dynamic>> users = firestore
-        .collection("SavedSoulDetails").doc(firebase!.email).collection('EachSavedSoulDetails').doc(email);
+        .collection("SavedSoulDetails")
+        .doc(firebase!.email)
+        .collection('EachSavedSoulDetails')
+        .doc(email);
     return users
         .set({
           'FullName': fullname,
@@ -41,8 +46,7 @@ class DataBase {
           'Address': address,
           'PhoneNumber': phoneNumber,
           'Occupation': occupation,
-          'timestamp': dateCreated
-              .toString(), // You need this to track things on your db
+          'timestamp': dateCreated.toString(),
           'createdAt': dateCreated.millisecondsSinceEpoch,
         })
         .then((value) => print('Details Added'))
@@ -50,10 +54,10 @@ class DataBase {
   }
 
   Future<void> updateStoreUserDetails(
-    String fullname, 
-      String occupation, String dateOfbirth){
-        final DocumentReference<Map<String, dynamic>> users = firestore.collection("SignedInUsersDetails").doc(firebase!.uid);
-        DateTime dateCreated = DateTime.now();
+      String fullname, String occupation, String dateOfbirth) {
+    final DocumentReference<Map<String, dynamic>> users =
+        firestore.collection("SignedInUsersDetails").doc(firebase!.uid);
+    DateTime dateCreated = DateTime.now();
 
     return users
         .update({
@@ -66,10 +70,8 @@ class DataBase {
         })
         .then((value) => print('Details Added'))
         .catchError((onError) => print('$onError'));
-
   }
 }
-
 
 // Future<void> storeDetails(String fullname, String email, String password,
 //       String occupation, String dateOfbirth) async {
@@ -92,9 +94,6 @@ class DataBase {
 //         .then((value) => print('Details Added'))
 //         .catchError((onError) => print('$onError'));
 //   }
-
-
-
 
 // Future<void> storeSoulDetails(String fullname, String email, String address,
 //       String phoneNumber, String occupation,) async {

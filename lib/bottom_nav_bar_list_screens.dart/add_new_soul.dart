@@ -20,6 +20,7 @@ class _AddANewSoulState extends State<AddANewSoul> {
   TextEditingController occupation = TextEditingController();
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   bool showSpinner = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,7 +150,8 @@ class _AddANewSoulState extends State<AddANewSoul> {
                             padding: const EdgeInsets.only(top: 20.0),
                             child: GestureDetector(
                               child: Container(
-                                height: MediaQuery.of(context).size.height * 0.07,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   shape: BoxShape.rectangle,
@@ -241,52 +243,50 @@ class _AddANewSoulState extends State<AddANewSoul> {
   }
 }
 
-
-
 // floatingActionButton: FloatingActionButton(
-      //   tooltip: 'New soul',
-      //   onPressed: () {
-      //     // addNewDialog(context);
-      //   },
-      //   backgroundColor: Colors.white,
-      //   child: Icon(
-      //     Icons.person_add_alt_rounded,
-      //     color: Colors.red[600],
-      //   ),
-      // ),
+//   tooltip: 'New soul',
+//   onPressed: () {
+//     // addNewDialog(context);
+//   },
+//   backgroundColor: Colors.white,
+//   child: Icon(
+//     Icons.person_add_alt_rounded,
+//     color: Colors.red[600],
+//   ),
+// ),
 
-      // LoginButton(
-                  //   onTap: () {
-                  //     if (
-                  //         // validates form details submitted by users
-                  //         _globalKey.currentState!.validate()) {
-                  //       // saves form details submitted by users
-                  //       _globalKey.currentState!.save();
-                  //     } else {
-                  //       // if field are empty return null (do not proceed)
-                  //       return null;
-                  //     }
-                  //     _dataBase
-                  //         .storeSoulDetails(
-                  //           fullName.text,
-                  //           emailaddress.text,
-                  //           address.text,
-                  //           phoneNumber.text,
-                  //           occupation.text,
-                  //         )
-                  //         .then((value) =>
-                  //             ScaffoldMessenger.of(context).showSnackBar(
-                  //               SnackBar(
-                  //                 padding:
-                  //                     EdgeInsets.only(bottom: 30.0, left: 20.0),
-                  //                 content: Text("Details added succesfully"),
-                  //               ),
-                  //             ));
-                  //     fullName.clear();
-                  //     emailaddress.clear();
-                  //     address.clear();
-                  //     phoneNumber.clear();
-                  //     occupation.clear();
-                  //   },
-                  //   mainText: 'Add Brethren',
-                  // ),
+// LoginButton(
+//   onTap: () {
+//     if (
+//         // validates form details submitted by users
+//         _globalKey.currentState!.validate()) {
+//       // saves form details submitted by users
+//       _globalKey.currentState!.save();
+//     } else {
+//       // if field are empty return null (do not proceed)
+//       return null;
+//     }
+//     _dataBase
+//         .storeSoulDetails(
+//           fullName.text,
+//           emailaddress.text,
+//           address.text,
+//           phoneNumber.text,
+//           occupation.text,
+//         )
+//         .then((value) =>
+//             ScaffoldMessenger.of(context).showSnackBar(
+//               SnackBar(
+//                 padding:
+//                     EdgeInsets.only(bottom: 30.0, left: 20.0),
+//                 content: Text("Details added succesfully"),
+//               ),
+//             ));
+//     fullName.clear();
+//     emailaddress.clear();
+//     address.clear();
+//     phoneNumber.clear();
+//     occupation.clear();
+//   },
+//   mainText: 'Add Brethren',
+// ),

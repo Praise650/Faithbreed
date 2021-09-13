@@ -1,9 +1,10 @@
+import 'package:faith_breed/models/souls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'shared_widget/signup_button.dart';
-show(BuildContext context, String fullName, String email, String phone,
-    String location, String occupation,) {
+
+show(BuildContext context, Souls soul) {
   return showModalBottomSheet(
     enableDrag: true,
     elevation: 5.0,
@@ -29,35 +30,35 @@ show(BuildContext context, String fullName, String email, String phone,
           ),
           ListTile(
             trailing: Icon(Icons.person),
-            title: Text(fullName),
+            title: Text(soul.fullname),
             onTap: null,
           ),
           ListTile(
               trailing: Icon(Icons.mail),
-              title: Text(email),
+              title: Text(soul.email),
               onTap: () async {
-                Email emails= Email(
+                Email emails = Email(
                   body: 'Email Body',
                   subject: 'Email Subject',
-                  recipients: [email],
+                  recipients: [soul.email],
                   isHTML: false,
                 );
-                 await FlutterEmailSender.send(emails);
+                await FlutterEmailSender.send(emails);
               }),
           ListTile(
-            trailing: Icon(Icons.phone),
-            title: Text(phone),
-            onTap: () async {
-              await FlutterPhoneDirectCaller.callNumber(phone);
+              trailing: Icon(Icons.phone),
+              title: Text(soul.phoneNumber),
+              onTap: () async {
+                await FlutterPhoneDirectCaller.callNumber(soul.phoneNumber);
               }),
           ListTile(
             trailing: Icon(Icons.location_on_rounded),
-            title: Text(location),
+            title: Text(soul.location),
             onTap: null,
           ),
           ListTile(
             trailing: Icon(Icons.work),
-            title: Text(occupation),
+            title: Text(soul.occupation),
             onTap: null,
           ),
           LoginButton(
